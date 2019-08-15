@@ -1,17 +1,20 @@
+server:
+  servlet:
+    context-path: "/github"
 spring:
   datasource:
     ds1:
       url: jdbc:mysql://127.0.0.1:3306/pachong?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
       username: root
-      password: 8910WANg!
+      password: 12345678
     ds2:
       url: jdbc:mysql://127.0.0.1:3306/pachong?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
       username: root
-      password: 8910WANg!
+      password: 12345678
   redis:
     host: 127.0.0.1
     port: 6379
-    password: QwcNWwHa
+    password:
 #  data:
 #    mongodb:
 #      uri: mongodb://uid:123456@127.0.0.1:27017/uid

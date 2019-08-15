@@ -2,7 +2,6 @@ package com.wixct.pachong.web.githubproject;
 
 
 import com.jfinal.core.Controller;
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.wixct.pachong.web.openopen.Openopen;
 import com.wixct.pachong.web.util.DateUtil;
@@ -10,14 +9,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +38,7 @@ public class GithubprojectController extends Controller {
     @RequestMapping(value="/githubproject/show",method= RequestMethod.GET)
     @ResponseBody
 	public Object show(@ApiParam("项目描述") @RequestParam(value="plang",defaultValue="",required=false) String plang,
-                     @ApiParam("项目名称") @RequestParam(value="pjname",defaultValue="",required=false) String pjname,
+                     @ApiParam("项目名称/描述关键词") @RequestParam(value="pjname",defaultValue="",required=false) String pjname,
                      @ApiParam("项目更新日期") @RequestParam(value="pupdate",defaultValue="",required=false) String pupdate,
                      @ApiParam("第几页") @RequestParam(value="page",defaultValue="1",required=false) int page,
                      @ApiParam("每页多少条") @RequestParam(value="limit",defaultValue="100",required=false) int limit){
@@ -61,8 +58,9 @@ public class GithubprojectController extends Controller {
 			params.add(searchKey);
 		}
 		if(StringUtils.isNoneBlank(pjname)){
-			sql_exp.append("and NAME like ? ");
+			sql_exp.append("and (NAME like ? or DESCRIPT like ?) ");
 			params.add("%" + pjname+ "%");
+            params.add("%" + pjname+ "%");
 		}
 		if(StringUtils.isNoneBlank(pupdate)){
 			sql_exp.append("and a.UPDATE=? ");
@@ -91,26 +89,35 @@ public class GithubprojectController extends Controller {
         now=now==null?new Date():now;
 //        now= DateUtil.addDate(now, -2);
         String nowStr=DateUtil.formatDate(now,"yyyy-MM-dd");
+        int todayNum=0;
+        String todayIsNew="第一次";
+        String wrongMsg="";
+
         Openopen openopen;
         try {
             String complateUrl="http://www.open-open.com/github/view/github"+nowStr+".html";
             List<Openopen> opls=Openopen.dao.use("ds1").find("select * from OPENOPEN where DATE=?",new Object[]{nowStr});
             if(opls.size()<=0){
-                openopen=new Openopen().setDATE(nowStr).setURL(complateUrl).setCOUNT(buildGithubPage(complateUrl,nowStr));
+                todayNum=buildGithubPage(complateUrl,nowStr);
+                openopen=new Openopen().setDATE(nowStr).setURL(complateUrl).setCOUNT(todayNum);
                 openopen.save();
+
             }else{
+                todayIsNew="非第一次";
                 if(opls.get(0).getCOUNT().equals(0)){
-                    openopen=opls.get(0).setCOUNT(buildGithubPage(complateUrl,nowStr));
+                    todayNum=buildGithubPage(complateUrl,nowStr);
+                    openopen=opls.get(0).setCOUNT(todayNum);
                     openopen.update();
                 }
             }
             //now=DateUtil.addDate(now, -1);
         } catch (IOException e) {
             e.printStackTrace();
+            wrongMsg=e.getMessage();
             i=1;
         }finally {
             resultMap.put("code", i);
-            resultMap.put("msg",i==0?"增加GITHUB项目成功!":"增加GITHUB项目失败!");
+            resultMap.put("msg",i==0?nowStr+todayIsNew+"共获取"+todayNum+"条":"增加GITHUB项目失败:"+wrongMsg);
             return resultMap;
         }
     }

@@ -15,7 +15,7 @@ layui.use(['form','layer','table','laytpl','laydate'],function(){
     //用户列表
     var tableIns = table.render({
         elem: '#githubprojectList',
-        url : '/githubproject/show',
+        url : './githubproject/show',
         //cellMinWidth : 95,
         page : true,
         height : "full-125",
@@ -38,34 +38,43 @@ layui.use(['form','layer','table','laytpl','laydate'],function(){
 //        ,show: true
         ,value:showdate(-2)
     });
-    //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
-    $(".search_githubproject_btn").on("click",function(){
+    //搜索函数
+    function searchRender(){
         if($(".searchVal").val() != ''){
             table.reload("githubprojectListTable",{
                 page: {
                     curr: 1 //重新从第 1 页开始
                 },
                 where: {
-                	plang: $("#plang").val(),  //搜索的关键字
-                	pjname: $("#pjname").val(),
+                    plang: $("#plang").val(),  //搜索的关键字
+                    pjname: $("#pjname").val(),
                     pupdate:$("#pupdate").val()
                 }
             })
         }else{
             layer.msg("请输入搜索的内容");
         }
+    }
+    //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
+    $(".search_githubproject_btn").on("click",searchRender);
+    //回车事件
+    $('.search_input').bind('keydown', function (event) {
+        var event = window.event || arguments.callee.caller.arguments[0];
+        if (event.keyCode == 13){
+            searchRender()
+        }
     });
-
-    //添加用户
+    //根据日期爬取
     function addUser(edit){
-
-        $.get("/githubproject/add",{
+        $("#githubprojectAdd_btn_id").addClass("layui-btn-disabled").prop("disabled" , true);
+        $.get("./githubproject/add",{
             pupdate : $("#pupdate").val() //将需要删除的newsId作为参数传入
         },function(data){
+            $("#githubprojectAdd_btn_id").removeClass("layui-btn-disabled").prop("disabled" , false);
             if(data.code == 0){
-                layer.msg("爬取GITHUB项目完成！未发现错误。");
+                layer.msg(data.msg);
             }else{
-                layer.msg("爬取GITHUB项目失败！原因未知。");
+                layer.msg(data.msg);
             }
 
         })
@@ -112,7 +121,7 @@ layui.use(['form','layer','table','laytpl','laydate'],function(){
 //        }
         else if(layEvent === 'del'){ //删除
             layer.confirm('确定删除此项目？',{icon:3, title:'提示信息'},function(index){
-                 $.get("/githubproject/delete/"+data.ID,{
+                 $.get("./githubproject/delete/"+data.ID,{
                      id : data.newsId  //将需要删除的newsId作为参数传入
                  },function(data){
                     tableIns.reload();
@@ -124,7 +133,7 @@ layui.use(['form','layer','table','laytpl','laydate'],function(){
         	var index = layui.layer.open({
                 title : "添加用户",
                 type : 2,
-                content :'/githubproject/view/'+data.ID ,
+                content :'./githubproject/view/'+data.ID ,
                 success : function(layero, index){
                     setTimeout(function(){
                         layui.layer.tips('点击此处返回用户列表', '.layui-layer-setwin .layui-layer-close', {

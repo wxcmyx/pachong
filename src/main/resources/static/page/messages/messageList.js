@@ -15,7 +15,7 @@ layui.use(['form','layer','table','laytpl','laydate'],function(){
     //用户列表
     var tableIns = table.render({
         elem: '#githubprojectList',
-        url : './githubproject/show',
+        url : './messageshow',
         //cellMinWidth : 95,
         page : true,
         height : "full-125",
@@ -24,12 +24,12 @@ layui.use(['form','layer','table','laytpl','laydate'],function(){
         id : "githubprojectListTable",
         cols : [[
             {type: "checkbox", fixed:"left", width:50},
-            {field: 'name', title: '项目名称', width:300, align:"left",templet:function(d){
-                    return '<a href="'+d.url+'" target="_blank">'+d.name+'</a>';
+            {field: 'category_str', title: '分类', width:110, align:'left'},
+            {field: 'title', title: '消息标题', minWidth:300, align:"left",templet:function(d){
+                    return '<a href="'+d.content+'" target="_blank">'+d.title+'</a>';
                 }},
-            {field: 'lang', title: '使用语言', width:100, align:"center"},
-            {field: 'descript', title: '项目描述', minWidth:300, align:'left'},
-            {field: 'update', title: '更新日期',width:150,align:'center'}
+            {field: 'time_str', title: '发布时间', width:150, align:'left'},
+            {field: 'update', title: '更新日期',width:180,align:'center'}
             //,{title: '操作', minWidth:175, templet:'#githubprojectListBar',fixed:"right",align:"center"}
         ]]
     });

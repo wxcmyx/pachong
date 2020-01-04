@@ -21,6 +21,7 @@ import javax.sql.DataSource;
 @Configuration
 public class DataSourceConfig {
 
+
     @Value("${spring.redis.host}")
     private String redisHost;
     @Value("${spring.redis.port}")
@@ -73,4 +74,7 @@ public class DataSourceConfig {
         plugin.start();
         return plugin;
     }
+
+
+
 }

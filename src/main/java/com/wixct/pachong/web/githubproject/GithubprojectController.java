@@ -31,7 +31,7 @@ public class GithubprojectController extends Controller {
 
 
 	public void index() {
-		render("/page/githubproject/githubprojectList.html");
+		render("/page/githubproject/messageList.html");
 	}
 
     @ApiOperation("GITHUB项目列表")

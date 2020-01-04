@@ -50,7 +50,10 @@ management:
       config:
         listenForHttpService: true
         debug: true
-
+message:
+  content:
+    filedir: /Users/xcwang/dev/github/wixctweb
+    baseurl: http://localhost:8080
 swagger:
 #  enabled: false
   title: xx系统

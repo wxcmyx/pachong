@@ -78,7 +78,7 @@ public class IndexController {
 
     }
 
-    @ApiOperation("GITHUB项目列表")
+    @ApiOperation("消息列表")
     @RequestMapping(value="/messageshow",method= RequestMethod.GET)
     @ResponseBody
     public Object show(@ApiParam("分类") @RequestParam(value="plang",defaultValue="",required=false) String plang,

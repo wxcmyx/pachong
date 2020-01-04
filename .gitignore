@@ -7,5 +7,5 @@
 *.iml
 out
 gen
-/target/
-/src/main/resources/application-prod.yml
+target
+src/main/resources/application-prod.yml

@@ -25,7 +25,7 @@ layui.use(['form','layer','table','laytpl','laydate'],function(){
         cols : [[
             {type: "checkbox", fixed:"left", width:50},
             {field: 'category_str', title: '分类', width:110, align:'left'},
-            {field: 'title', title: '消息标题', minWidth:300, align:"left",templet:function(d){
+            {field: 'title', title: '消息标题', minWidth:500, align:"left",templet:function(d){
                     return '<a href="'+d.content+'" target="_blank">'+d.title+'</a>';
                 }},
             {field: 'time_str', title: '发布时间', width:150, align:'left'},

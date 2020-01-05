@@ -41,6 +41,10 @@ public class IndexController {
         return "forward:/page/githubproject/githubprojectList.html";
     }
 
+    @GetMapping("/messages")
+    public String messages() {
+        return "forward:/page/messages/messageList.html";
+    }
 
     @RequestMapping(value="/getmessages")
     @ResponseBody
@@ -109,7 +113,7 @@ public class IndexController {
             sql_exp.append("and a.time_str like ? ");
             params.add(pupdate+"%");
         }
-        sql_exp.append("order by a.UPDATE desc");
+        sql_exp.append("order by a.time_str desc");
         logger.error(sql_exp.toString());
         Page<Record> pages= Db.use("ds1").paginate(pageNum,pageSize,sql_select.toString(),sql_exp.toString(),params.toArray());
         List result=new ArrayList();
@@ -122,8 +126,5 @@ public class IndexController {
         resultMap.put("msg", "");
         return resultMap;
     }
-    @GetMapping("/messages")
-    public String messages() {
-        return "forward:/page/messages/messageList.html";
-    }
+
 }

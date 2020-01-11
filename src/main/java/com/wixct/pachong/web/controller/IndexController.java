@@ -2,6 +2,7 @@ package com.wixct.pachong.web.controller;
 
 import com.jfinal.kit.FileKit;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.DbKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.wixct.pachong.config.DataSourceConfig;
@@ -120,6 +121,7 @@ public class IndexController {
         for(Record r:pages.getList()){
             result.add(r.getColumns());
         }
+
         resultMap.put("data",result);
         resultMap.put("count", pages.getTotalRow());
         resultMap.put("code", 0);

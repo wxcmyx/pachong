@@ -52,9 +52,12 @@ layui.use(['form','layer','table','laytpl','laydate'],function(){
                     plang: $("#plang").val(),  //搜索的关键字
                     pjname: $("#pjname").val(),
                     pupdate:$("#pupdate").val()
+                },
+                done:function () {
+                    layer.close(index);
                 }
             })
-            layer.close(index);
+
         }else{
             layer.msg("请输入搜索的内容");
         }

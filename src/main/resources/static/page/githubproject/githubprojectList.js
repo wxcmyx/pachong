@@ -41,7 +41,9 @@ layui.use(['form','layer','table','laytpl','laydate'],function(){
     //搜索函数
     function searchRender(){
         if($(".searchVal").val() != ''){
-            var index = layer.load(2); //添加laoding,0-2两种方式
+            var index = layer.load(0, {
+                shade: [0.5,'#fff'] //0.1透明度的白色背景
+            }); //添加laoding,0-2两种方式
             table.reload("githubprojectListTable",{
                 page: {
                     curr: 1 //重新从第 1 页开始
@@ -69,10 +71,14 @@ layui.use(['form','layer','table','laytpl','laydate'],function(){
     });
     //根据日期爬取
     function addUser(edit){
+        var index = layer.load(0, {
+            shade: [0.5,'#fff'] //0.1透明度的白色背景
+        }); //添加laoding,0-2两种方式
         $("#githubprojectAdd_btn_id").addClass("layui-btn-disabled").prop("disabled" , true);
         $.get("./githubproject/add",{
             pupdate : $("#pupdate").val() //将需要删除的newsId作为参数传入
         },function(data){
+            layer.close(index);
             $("#githubprojectAdd_btn_id").removeClass("layui-btn-disabled").prop("disabled" , false);
             if(data.code == 0){
                 layer.msg(data.msg);

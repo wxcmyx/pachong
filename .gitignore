@@ -9,3 +9,4 @@ out
 gen
 target
 src/main/resources/application-prod.yml
+src/main/resources/pachong.sql

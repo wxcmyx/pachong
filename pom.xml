@@ -55,7 +55,7 @@
         <logstash.version>5.1</logstash.version>
         <jsets-shiro.version>1.0.4</jsets-shiro.version>
         <logback-kafka-appender.version>0.1.0</logback-kafka-appender.version>
-        <jsoup.version>1.11.3</jsoup.version>
+        <jsoup.version>1.15.3</jsoup.version>
 
 
     </properties>
